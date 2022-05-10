@@ -4,50 +4,49 @@ const colors = ['red', 'blue', 'green', 'purple', 'grey'];
 
 let boxNumber = 2;
 
+let leftMouseDown = false;
+
 function addBoxEventsListeners(newBox) {
     function onMouseMove(ev) {
-        console.log(ev.type, ev.target);
-        ev.target.style.left = ev.pageX - ev.target.offsetWidth / 2 + 'px';
-        ev.target.style.top = ev.pageY - ev.target.offsetHeight / 2 + 'px';
+        if (leftMouseDown) {
+            ev.target.style.left = ev.pageX - ev.target.offsetWidth / 2 + 'px';
+            ev.target.style.top = ev.pageY - ev.target.offsetHeight / 2 + 'px';
+        }
     }
 
+    newBox.addEventListener('mousemove', onMouseMove);
+
     newBox.addEventListener('mousedown', (ev) => {
-        console.log(ev.type, ev.button);
-        if (ev.button === 0) {
-            newBox.addEventListener('mousemove', onMouseMove);
+        if (ev.button === 0 && !ev.shiftKey) {
+            leftMouseDown = true;
         }
     });
 
     newBox.addEventListener('mouseup', (ev) => {
-        console.log(ev.type);
-        if (ev.button === 0) {
-            newBox.removeEventListener('mousemove', onMouseMove);
+        if (ev.button === 0 && !ev.shiftKey) {
+            leftMouseDown = false;
         }
     });
 
     newBox.addEventListener('mousedown', (ev) => {
-        console.log(ev.type, ev.button);
         if (ev.button === 2) {
             newBox.style['background-color'] = colors[Math.floor(Math.random() * 5)];
         }
     });
 
     newBox.addEventListener('mousedown', (ev) => {
-        console.log(ev.type, ev.button);
         if (ev.button === 2) {
             newBox.style['background-color'] = colors[Math.floor(Math.random() * 5)];
         }
     });
 
     newBox.addEventListener('mousedown', (ev) => {
-        console.log(ev.type, ev.button);
         if (ev.button === 0 && ev.shiftKey) {
             newBox.classList.toggle('box-large');
         }
     });
 
     newBox.addEventListener('dblclick', (ev) => {
-        console.log(ev.type, ev.button);
         if (ev.button === 0 && ev.altKey) {
             let boxesNum = document.getElementsByClassName('box').length;
             if (boxesNum > 1) {
@@ -57,8 +56,7 @@ function addBoxEventsListeners(newBox) {
     });
 
     newBox.addEventListener('dblclick', (ev) => {
-        console.log(ev.type, ev.button);
-        if (ev.button === 0) {
+        if (ev.button === 0 && !ev.altKey) {
             let boxContainer = document.getElementsByClassName('box-container')[0];
 
             let newBox = document.createElement('div');
